@@ -1,5 +1,16 @@
 var cloudyWeather = angular.module("cloudyWeather",['ngMaterial','ngMessages','ngRoute','md.data.table']);
 
+cloudyWeather.config(['$routeProvider', function($routeProvider){
+	$routeProvider
+	.when("/cities-list",{
+		templateUrl: "cities-list.html",
+		controller: "citiesListController"
+	})
+	.otherwise({
+		redirectTo: "/"
+	})
+}]);
+
 cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window, $http){
     $scope.toggleLeftMenu = function()
     {
@@ -8,6 +19,7 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
 
     $scope.locationInput= "";
     $scope.cityInputMode = false;
+    $scope.idInputMode = false;
     $scope.coordInputMode = false;
     $scope.autoDetectMode = false;
 
@@ -18,6 +30,7 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
     let unitModeUrl = "&units=metric";
 
     let cityName = "";
+    let cityID = "";
     let latitude = "";
     let longitude = "";
     var detectedLat = "";
@@ -73,18 +86,29 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
     	if($scope.locationInput === "city")
     	{
     		$scope.cityInputMode = true;
+    		$scope.idInputMode = false;
     		$scope.coordInputMode = false;
     		$scope.autoDetectMode = false;    		
     	}
+    	if($scope.locationInput === "id")
+    	{
+    		$scope.cityInputMode = false;
+    		$scope.idInputMode = true;
+    		$scope.coordInputMode = false;
+    		$scope.autoDetectMode = false;
+    	}
+
     	if($scope.locationInput === "coord")
     	{
     		$scope.cityInputMode = false;
+    		$scope.idInputMode = false;
     		$scope.coordInputMode = true;
     		$scope.autoDetectMode = false;
     	}
     	if($scope.locationInput === "auto")
     	{
     		$scope.cityInputMode = false;
+    		$scope.idInputMode = false;
     		$scope.coordInputMode = false;
     		$scope.autoDetectMode = true;
     	}
@@ -382,6 +406,22 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
     	}
     }
 
+    $scope.addCurrentCityToAvailableCities =function(weatherObj)
+    {
+    	var db = firebase.firestore();
+    	db.collection("available-cities").doc(String(weatherObj.id)).set({
+    	cityId: weatherObj.id,
+    	cityName: weatherObj.name,
+    	latitude: weatherObj.coord.lat,
+    	longitude: weatherObj.coord.lon,
+    	countryCode: weatherObj.sys.country
+    	}).then(function(){
+    		alert("A New City info: added.");
+    	}).catch(function(error){
+    		alert("Error adding new city info: ", error);
+    	});
+    }
+
     $window.navigator.geolocation.getCurrentPosition(function(pos){
     	detectedLat = pos.coords.latitude;
     	detectedLon = pos.coords.longitude;
@@ -409,6 +449,28 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
     		});
     }
 
+    $scope.createReqObj = function(currentWeatherReqUrl, fiveDayForecastReqUrl)
+    {
+    	let currentWeatherReq = {
+    		method: 'GET',
+    		url: currentWeatherReqUrl,
+    		headers: {
+    			'Content-Type': 'application/json',
+    		},
+    	};
+
+    	let fiveDayForecastReq = {
+    		method: 'GET',
+    		url: fiveDayForecastReqUrl,
+    		headers: {
+    			'Content-Type': 'application/json',
+    		},
+    	};
+
+    	$scope.currentWeatherDataFetch(currentWeatherReq,$http);
+    	$scope.fiveDayForecastDataFetch(fiveDayForecastReq,$http);
+    }
+
     $scope.currentWeatherDataFetch = function(req, $http)
     {
     	$http(req)
@@ -417,8 +479,10 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
     			$scope.uvIndexDataFetch($scope.currentWeatherObj.coord.lat, $scope.currentWeatherObj.coord.lon);
     			$scope.unitSignsSet($scope.britishUnitMode);
     			$scope.weatherIconAndWarning($scope.currentWeatherObj.weather[0].id);
+    			$scope.addCurrentCityToAvailableCities($scope.currentWeatherObj);
     		}, function errorCallBack(){
     			alert('api req fail');
+    			$scope.toggleLeftMenu();
     		});      
     }
 
@@ -437,81 +501,32 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
         cityName = cityName.split(' ').join('+');
     	let cityUrl = "q="+cityName;
     	let currentWeatherReqUrl = currentWeatherUrl + cityUrl + unitModeUrl + appKeyUrl;
-    	
-    	let currentWeatherReq = {
-    		method: 'GET',
-    		url: currentWeatherReqUrl,
-    		headers: {
-    			'Content-Type': 'application/json',
-    		},
-    	};
+    	let fiveDayForecastReqUrl = fiveDayForecastUrl + cityUrl + unitModeUrl + appKeyUrl;
+    	$scope.createReqObj(currentWeatherReqUrl,fiveDayForecastReqUrl);
+    }
 
-    	let fiveDayForecastReqUrl = fiveDayForecastUrl + cityUrl + unitModeUrl + appKeyUrl
-    	
-    	let fiveDayForecastReq = {
-    		method: 'GET',
-    		url: fiveDayForecastReqUrl,
-    		headers: {
-    			'Content-Type': 'application/json',
-    		},
-    	};
-
-    	$scope.currentWeatherDataFetch(currentWeatherReq, $http);
-    	$scope.fiveDayForecastDataFetch(fiveDayForecastReq, $http);
-
+    $scope.getWeatherByCityId = function(cityID)
+    {
+    	let cityIDUrl = "id="+cityID;
+    	let currentWeatherReqUrl = currentWeatherUrl + cityIDUrl + unitModeUrl + appKeyUrl;
+	   	let fiveDayForecastReqUrl = fiveDayForecastUrl + cityIDUrl + unitModeUrl + appKeyUrl;
+	   	$scope.createReqObj(currentWeatherReqUrl,fiveDayForecastReqUrl);
     }
 
     $scope.getWeatherByLatLon = function(latitude, longitude)
     {
     	let inputCoordUrl = "lat="+latitude+"&lon="+longitude;
     	let currentWeatherReqUrl = currentWeatherUrl + inputCoordUrl + unitModeUrl + appKeyUrl;
-
-    	let currentWeatherReq = {
-    		method: 'GET',
-    		url: currentWeatherReqUrl,
-    		headers: {
-    			'Content-Type': 'application/json',
-    		},
-    	};
-
     	let fiveDayForecastReqUrl = fiveDayForecastUrl + inputCoordUrl + unitModeUrl + appKeyUrl;
-
-    	let fiveDayForecastReq = {
-    		method: 'GET',
-    		url: fiveDayForecastReqUrl,
-    		headers: {
-    			'Content-Type': 'application/json',
-    		},
-    	};
-
-    	$scope.currentWeatherDataFetch(currentWeatherReq, $http);
-    	$scope.fiveDayForecastDataFetch(fiveDayForecastReq, $http);
+    	$scope.createReqObj(currentWeatherReqUrl,fiveDayForecastReqUrl);
     }
 
     $scope.getWeatherByDetectedLatLon = function(detectedLat, detectedLon)
     {
     	let detectedCoordUrl = "lat="+ Math.round(detectedLat*100)/100+"&lon="+ Math.round(detectedLon*100)/100;
     	let currentWeatherReqUrl = currentWeatherUrl + detectedCoordUrl + unitModeUrl + appKeyUrl;
-
-    	let currentWeatherReq = {
-    		method: 'GET',
-    		url: currentWeatherReqUrl,
-    		headers: {
-    			'Content-Type': 'application/json',
-    		},
-    	};
-
     	let fiveDayForecastReqUrl = fiveDayForecastUrl + detectedCoordUrl + unitModeUrl + appKeyUrl;
-
-    	let fiveDayForecastReq = {
-    		method: 'GET',
-    		url: fiveDayForecastReqUrl,
-    		headers: {
-    			'Content-Type': 'application/json',
-    		},
-    	};
-    	$scope.currentWeatherDataFetch(currentWeatherReq, $http);
-    	$scope.fiveDayForecastDataFetch(fiveDayForecastReq, $http);
+    	$scope.createReqObj(currentWeatherReqUrl,fiveDayForecastReqUrl);
     }
 
     $scope.getWeather = function()
@@ -528,6 +543,17 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
     		
     		else
     			alert("Please enter city name");
+    	}
+
+    	else if($scope.idInputMode)
+    	{
+    		cityID = $scope.cityIdInput;
+    		$scope.cityIdInput = "";
+    		if(cityID)
+    		{
+    			$scope.getWeatherByCityId(cityID);
+    			$scope.toggleLeftMenu();
+    		}
     	}
 
     	else if($scope.coordInputMode)
@@ -570,6 +596,12 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
     	{
     		$scope.getWeatherByCityName(cityName);
     	}
+
+    	else if($scope.idInputMode)
+    	{
+    		$scope.getWeatherByCityId(cityID);
+    	}
+
     	else if($scope.coordInputMode)
     	{
     		$scope.getWeatherByLatLon(latitude, longitude);
@@ -583,5 +615,22 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
     	}
 
     }
+
+});
+
+cloudyWeather.controller("citiesListController", function($scope,$http){
+	var db = firebase.firestore();
+	$scope.retrievedCityList = [];
+	db.collection("available-cities").get().then((querySnapshot)=>{
+		querySnapshot.forEach((doc)=>{			
+			$scope.retrievedCityList.push({
+				"cityId": `${doc.id}`,
+				"cityName": `${doc.data().cityName}`,
+				"latitude": `${doc.data().latitude}`,
+				"longitude": `${doc.data().longitude}`,
+				"countryCode": `${doc.data().countryCode}`
+			});
+		});
+	});
 
 });

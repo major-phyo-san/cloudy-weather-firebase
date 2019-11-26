@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 
 <head>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+	<script>
+  	window.dataLayer = window.dataLayer || [];
+  	function gtag(){dataLayer.push(arguments);}
+  	gtag('js', new Date());
+
+  	gtag('config', 'UA-153233624-2');
+	</script>
     <title>Cloudy Weather App</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="app/angular-material-1.1.12/angular-material.css">
@@ -30,6 +39,7 @@
             <div style="margin: 5px;">
                 <md-radio-group ng-model="locationInput" ng-change="radioChanged()">
                     <md-radio-button value="city">By city name</md-radio-button>
+                    <md-radio-button value="id">By city id</md-radio-button>
                     <md-radio-button value="coord">By latitude and longitude</md-radio-button>
                     <md-radio-button value="auto">By detected location</md-radio-button>
                 </md-radio-group>
@@ -40,6 +50,13 @@
                     <label>City name</label>
                     <input type="text" ng-model="cityNameInput">
                 </md-input-container>
+            </div>
+
+            <div ng-show="idInputMode">
+            	<md-input-container>
+            		<label>City id</label>
+            		<input type="number" ng-model="cityIdInput">
+            	</md-input-container>
             </div>
 
             <div ng-show="coordInputMode">
@@ -53,7 +70,8 @@
                 </md-input-container> 
             </div>            
         </div>        
-            <md-button id="get-weather" class="md-primary md-raised"  ng-click="getWeather()">Show weather status</md-button>       
+            <md-button id="get-weather" class="md-primary md-raised"  ng-click="getWeather()">Show weather status</md-button>
+            <md-button ng-click="toggleLeftMenu()" id="list-cities" class="md-raised menu-links" href="#!cities-list">List available cities</md-button>
     </md-sidenav>
 
     <div layout="column" flex layout-fill role="main" class="relative">
@@ -185,18 +203,62 @@
                         </table>
                     </md-table-container>
                 </div>
-            </div>
-        </div>      
+            </div>            
+        </div>
+        <div ng-view></div>
+
+            <script type="text/ng-template" id="cities-list.html">
+                <h1 class="service-description">Available Cities</h1>
+                <md-button class="md-raised menu-links" href="#!index/">Hide</md-button>
+                <md-table-container>
+                	<table md-table>
+                		<thead md-head>
+                			<tr md-row>
+                				<th md-column><span class="table-headings">City Id</span></th>
+                                    <th md-column><span class="table-headings">City Name </span></th>
+                                    <th md-column><span class="table-headings">Latitude</span></th>
+                                    <th md-column><span class="table-headings">Longitude</span></th>
+                                    <th md-column><span class="table-headings">Country Code </span></th>
+                			</tr>
+                		</thead>
+                		<tbody>
+                			<tr md-row ng-repeat="city in retrievedCityList">
+                				<td md-cell>{{city.cityId}}</td>
+                                <td md-cell>{{city.cityName}}</td>
+                                <td md-cell>{{city.latitude}}</td>
+                                <td md-cell>{{city.longitude}}</td>
+                                <td md-cell>{{city.countryCode}}</td>
+                			</tr>
+                		</tbody>
+                	</table>
+                </md-table-container>                     
+            </script>   
     </div>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="/__/firebase/7.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
 
     <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="/__/firebase/7.5.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-firestore.js"></script>
 
     <!-- Initialize Firebase -->
-    <script src="/__/firebase/init.js"></script>
+    <script>
+  	// Your web app's Firebase configuration
+  	var firebaseConfig = {
+    	apiKey: "AIzaSyA53Wwfg1iEjhj7LhE8JCSGxAlu5DxEjSM",
+    	authDomain: "cloudy-weather-2019.firebaseapp.com",
+    	databaseURL: "https://cloudy-weather-2019.firebaseio.com",
+    	projectId: "cloudy-weather-2019",
+    	storageBucket: "cloudy-weather-2019.appspot.com",
+    	messagingSenderId: "1019071128059",
+    	appId: "1:1019071128059:web:4ced2873fcc31c4dd16b5e",
+    	measurementId: "G-8XLG0ZTLSK"
+  	};
+  	// Initialize Firebase
+  	firebase.initializeApp(firebaseConfig);
+  	firebase.analytics();
+</script>
 </body>
 
 <!-- Angular.js Libraries-->
