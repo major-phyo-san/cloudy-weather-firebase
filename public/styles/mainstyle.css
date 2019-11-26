@@ -1,0 +1,74 @@
+.md-button{
+    text-transform: capitalize !important;
+}
+
+.toolbar-buttons{
+    width: 20px;
+}
+
+md-sidenav{
+    width: 280px;
+}
+
+md-toolbar.left-toolbar{
+    background: #3b68f2;
+}
+
+md-toolbar.main-toolbar{
+    /*background: #156aeb;*/
+    background: #000000;
+}
+
+md-icon{
+    margin: 5px;
+}
+
+div#main-content{
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+md-input-container{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+md-radio-button{
+    color: #9254de;
+}
+
+
+
+/*md-card{
+    background: #f6ffed;
+}
+
+md-card-header-text {
+    color: #a0d911;
+}
+
+@media handheld{
+    md-card{
+        width: 120px;
+
+    }
+    .card-contents{
+        margin-left: 5px;
+    }
+}
+
+@media screen{
+    md-list{
+        marign-top: 10px;
+    }
+    md-card{        
+        width: 580px;
+    }
+
+    div.card-contents{
+        justify-content: left;
+        height: 80px;
+        margin: 10px;
+    }
+
+}*/

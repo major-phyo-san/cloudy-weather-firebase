@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Cloudy Weather App</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="app/angular-material-1.1.12/angular-material.css">
+    <link rel="stylesheet" href="styles/material-design-icon-fonts/icon-font-include.css">
+    <link rel="stylesheet" href="styles/mainstyle.css">
+    <link rel="stylesheet" href="app/angular-material-table-0.10.9/md-data-table.css">
+    <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
+</head>
+
+<body layout="row" flex ng-app="cloudyWeather" ng-controller="mainController" ng-cloak>
+
+    <md-sidenav layout="column" flex md-component-id="left" class="md-sidenav-left">
+        <md-toolbar class="md-tall md-hue-10 left-toolbar">
+            <div layout="column" flex layout-align="start center" class="md-toolbar-tools menu">
+
+                <div layout="row" layout-align="center center">
+                    <img src="images/icons/icon-32x32.png"/>
+                </div>
+                <div layout-align="">
+                    <p>Is it cloudy? is it sunny?</p>
+                </div>
+
+            </div>
+        </md-toolbar>
+        <div layout="column" flex layout-align="start">
+            <p id="hint-user">Get weather info:</p>
+            <div style="margin: 5px;">
+                <md-radio-group ng-model="locationInput" ng-change="radioChanged()">
+                    <md-radio-button value="city">By city name</md-radio-button>
+                    <md-radio-button value="coord">By latitude and longitude</md-radio-button>
+                    <md-radio-button value="auto">By detected location</md-radio-button>
+                </md-radio-group>
+            </div>
+
+            <div ng-show="cityInputMode">
+                <md-input-container>
+                    <label>City name</label>
+                    <input type="text" ng-model="cityNameInput">
+                </md-input-container>
+            </div>
+
+            <div ng-show="coordInputMode">
+                <md-input-container>
+                    <label>Latitude</label>
+                    <input type="number" ng-model="latInput"><br>
+                </md-input-container>
+                <md-input-container>
+                    <label>Longitude</label>
+                    <input type="number" ng-model="lonInput">
+                </md-input-container> 
+            </div>            
+        </div>        
+            <md-button id="get-weather" class="md-primary md-raised"  ng-click="getWeather()">Show weather status</md-button>       
+    </md-sidenav>
+
+    <div layout="column" flex layout-fill role="main" class="relative">
+        <md-toolbar class="animate-show md md-whiteframe-z1 main-toolbar">
+            <div layout="row" flex class="md-toolbar-tools">
+                <h2 id="app-name">Cloudy Weather</h2>
+                <div>
+                    <md-button class="toolbar-buttons" ng-click="toggleLeftMenu()">
+                        <md-icon>add</md-icon>
+                        <md-tooltip>Add</md-tooltip>
+                    </md-button>
+                    <md-button class="toolbar-buttons" ng-click="getWeatherRefresh()">
+                        <md-icon>refresh</md-icon>
+                        <md-tooltip>Refresh</md-tooltip>
+                    </md-button>
+                </div>               
+
+                <md-menu >
+                    <md-button class="toolbar-buttons" ng-click="$mdMenu.open($event)">
+                        <md-icon>more_vert</md-icon>
+                        <md-tooltip>More</md-tooltip>
+                    </md-button>
+                    <md-menu-content style="height: 70px;">                       
+                        <md-menu-item>
+                            <md-switch ng-change="unitModeChanged()" ng-model="britishUnitMode" >Use British units</md-switch>
+                        </md-menu-item>                                              
+                    </md-menu-content>
+                </md-menu>
+            </div>
+        </md-toolbar>
+
+        <div layout="column" layout-align="center">             
+            <div layout="row" ng-show="currentWeatherObj" style="color: #27b7f9;">
+                <div layout="column">
+                    <h3 class="md-display-1">Current Weather</h3>
+                    <div style="margin-top: 30px;">Last updated on: <strong>{{unixTimeToNormalTime(currentWeatherObj.dt)}}</strong>
+                    </div>
+                <!--<div>{{currentWeatherObj.weather[0].main}}</div>
+                <div>{{currentWeatherObj.weather[0].description}}</div>-->
+                </div>
+                <div layout="column" style="margin-top: 50px; margin-left: 50px;"> 
+                    <div> <strong>{{currentWeatherObj.main.temp}} {{tempDegreeSign}} </strong>
+                    </div>
+                    <img ng-show="currentWeatherObj" height="64px" width="64px" ng-src="images/weather-icons/{{weatherIconUrl}}"/>
+                    <div><strong>{{weatherWarningText}}</strong>
+                    </div>          
+                </div>                
+            </div><br>
+                <div layout="column" ng-show="currentWeatherObj">                    
+                        <div layout="row">
+                            <div style="width: 600px;">
+                                Weather Details
+                                <div>Temperature Maximum: <strong>{{currentWeatherObj.main.temp_max}} {{tempDegreeSign}}</strong>
+                                </div>
+                                <div>Temperature Minimum: <strong>{{currentWeatherObj.main.temp_min}} {{tempDegreeSign}}</strong>
+                                </div>
+                                <div>Pressure: <strong>{{currentWeatherObj.main.pressure}} {{pressureSign}}</strong>
+                                </div>
+                                <div>Humidity: <strong>{{currentWeatherObj.main.humidity}} {{humiditySign}}</strong>
+                                </div>
+                                <div>Visibility: <strong>{{currentWeatherObj.visibility}} {{visibilitySign}}</strong>
+                                </div>
+                                <div>Clouds: <strong>{{currentWeatherObj.clouds.all}} {{cloudPercentSign}}</strong>
+                                </div>
+                                <div>Wind
+                                    <div>Speed: <strong>{{currentWeatherObj.wind.speed}} {{windSpeedSign}}</strong>
+                                    </div>
+                                    <div>Direction: <strong>{{windDirection(currentWeatherObj.wind.deg)}}</strong>
+                                    </div>
+                                    <div>Gust: <strong>{{currentWeatherObj.wind.gust}} {{windSpeedSign}}</strong>
+                                    </div>                                        
+                                </div>
+                                <div>UV index: <strong>{{uvDataObj.value}}</strong></div>
+                            </div>                                  
+                            <div style="margin-left: 20px;">
+                                Location details
+                                <div>Coordinates
+                                    <div>Latitude: <strong>{{currentWeatherObj.coord.lat}} {{latitudeSign}} </strong></div>
+                                    <div>Longitude: <strong>{{currentWeatherObj.coord.lon}} {{longitudeSign}} </strong></div>
+                                </div>
+                                <div>City: <strong>{{fiveDayForecastObj.city.name}}</strong> </div>
+                                    <div>Population: <strong>{{fiveDayForecastObj.city.population}}</strong> </div>
+                                    <div>Country: <strong>{{fiveDayForecastObj.city.country}}</strong> </div>
+                                    <div>Timezone: <strong>{{fiveDayForecastObj.city.timezone}}</strong> </div>
+                                    <div>Sunrise: <strong>{{unixTimeToNormalTime(currentWeatherObj.sys.sunrise)}}</strong> </div>
+                                    <div>Sunset: <strong>{{unixTimeToNormalTime(currentWeatherObj.sys.sunset)}}</strong> </div>
+                            </div>
+                        </div>                                         
+               </div>
+            <div layout="column" ng-show="fiveDayForecastObj" style="color: #27b7f9;">
+                <div>
+                    <h3 class="md-display-1">Five Days Forecast</h3>
+                </div>
+                <div>
+                    <md-table-container>
+                        <table md-table>
+                            <thead md-head>
+                                <tr md-row>
+                                    <th md-column><span class="table-headings">Forecast Datetime</span></th>
+                                    <th md-column><span class="table-headings">Temperature </span></th>
+                                    <th md-column><span class="table-headings">Temp (Min) </span></th>
+                                    <th md-column><span class="table-headings">Temp (Max) </span></th>
+                                    <th md-column><span class="table-headings">Pressure (Avg) </span></th>                       
+                                    <th md-column><span class="table-headings">Pressure (Ground) </span></th>
+                                    <th md-column><span class="table-headings">Humidity </span></th>
+                                    <th md-column><span class="table-headings">Wind Speed</span></th>
+                                    <th md-column><span class="table-headings">Wind Direction</span></th>
+                                    <th md-column><span class="table-headings">Cloud Percent</span></th>
+                                    <th md-column><span class="table-headings">Weather </span></th>
+                                    <th md-column><span class="table-headings">Forecast Description </span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr md-row ng-repeat="forecast in fiveDayForecastObj.list">
+                                    <td md-cell>{{unixTimeToNormalTime(forecast.dt)}}</td>
+                                    <td md-cell>{{forecast.main.temp}} {{tempDegreeSign}} </td>
+                                    <td md-cell>{{forecast.main.temp_min}} {{tempDegreeSign}} </td>
+                                    <td md-cell>{{forecast.main.temp_max}} {{tempDegreeSign}} </td>
+                                    <td md-cell>{{forecast.main.pressure}} {{pressureSign}} </td>
+                                    <td md-cell>{{forecast.main.grnd_level}} {{pressureSign}} </td>
+                                    <td md-cell>{{forecast.main.humidity}} {{humiditySign}} </td>
+                                    <td md-cell>{{forecast.wind.speed}} {{windSpeedSign}} </td>
+                                    <td md-cell>{{windDirection(forecast.wind.deg)}} </td>
+                                    <td md-cell>{{forecast.clouds.all}} {{cloudPercentSign}} </td>
+                                    <td md-cell>{{forecast.weather[0].main}} </td>
+                                    <td md-cell>{{forecast.weather[0].description}} </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                </div>
+            </div>
+        </div>      
+    </div>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="/__/firebase/7.5.0/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="/__/firebase/7.5.0/firebase-analytics.js"></script>
+
+    <!-- Initialize Firebase -->
+    <script src="/__/firebase/init.js"></script>
+</body>
+
+<!-- Angular.js Libraries-->
+<script src="app/angular-1.7.8/angular.js"></script>
+<script src="app/angular-1.7.8/angular-animate.js"></script>
+<script src="app/angular-1.7.8/angular-aria.js"></script>
+<script src="app/angular-1.7.8/angular-messages.js"></script>
+<script src="app/angular-1.7.8/angular-route.js"></script>
+
+<!-- Angular Material Libraries-->
+<script src="app/angular-material-1.1.12/angular-material.js"></script>
+<script src="app/angular-material-table-0.10.9/md-data-table.js"></script>
+
+<!-- Application bootstrap-->
+<script src="app/cloudyWeather.js"></script>
+
+</html>
