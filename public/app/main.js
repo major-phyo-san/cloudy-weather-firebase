@@ -1,16 +1,5 @@
 var cloudyWeather = angular.module("cloudyWeather",['ngMaterial','ngMessages','ngRoute','md.data.table']);
 
-cloudyWeather.config(['$routeProvider', function($routeProvider){
-	$routeProvider
-	.when("/cities-list",{
-		templateUrl: "cities-list.html",
-		controller: "citiesListController"
-	})
-	.otherwise({
-		redirectTo: "/"
-	})
-}]);
-
 cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window, $http){
     $scope.toggleLeftMenu = function()
     {
@@ -406,22 +395,6 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
     	}
     }
 
-    $scope.addCurrentCityToAvailableCities =function(weatherObj)
-    {
-    	var db = firebase.firestore();
-    	db.collection("available-cities").doc(String(weatherObj.id)).set({
-    	cityId: weatherObj.id,
-    	cityName: weatherObj.name,
-    	latitude: weatherObj.coord.lat,
-    	longitude: weatherObj.coord.lon,
-    	countryCode: weatherObj.sys.country
-    	}).then(function(){
-    		alert("A New City info: added.");
-    	}).catch(function(error){
-    		alert("Error adding new city info: ", error);
-    	});
-    }
-
     $window.navigator.geolocation.getCurrentPosition(function(pos){
     	detectedLat = pos.coords.latitude;
     	detectedLon = pos.coords.longitude;
@@ -618,19 +591,3 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
 
 });
 
-cloudyWeather.controller("citiesListController", function($scope,$http){
-	var db = firebase.firestore();
-	$scope.retrievedCityList = [];
-	db.collection("available-cities").get().then((querySnapshot)=>{
-		querySnapshot.forEach((doc)=>{			
-			$scope.retrievedCityList.push({
-				"cityId": `${doc.id}`,
-				"cityName": `${doc.data().cityName}`,
-				"latitude": `${doc.data().latitude}`,
-				"longitude": `${doc.data().longitude}`,
-				"countryCode": `${doc.data().countryCode}`
-			});
-		});
-	});
-
-});

@@ -12,6 +12,8 @@
 	</script>
     <title>Cloudy Weather App</title>
     <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="app/angular-material-1.1.12/angular-material.css">
     <link rel="stylesheet" href="styles/material-design-icon-fonts/icon-font-include.css">
     <link rel="stylesheet" href="styles/mainstyle.css">
@@ -71,7 +73,6 @@
             </div>            
         </div>        
             <md-button id="get-weather" class="md-primary md-raised"  ng-click="getWeather()">Show weather status</md-button>
-            <md-button ng-click="toggleLeftMenu()" id="list-cities" class="md-raised menu-links" href="#!cities-list">List available cities</md-button>
     </md-sidenav>
 
     <div layout="column" flex layout-fill role="main" class="relative">
@@ -204,35 +205,7 @@
                     </md-table-container>
                 </div>
             </div>            
-        </div>
-        <div ng-view></div>
-
-            <script type="text/ng-template" id="cities-list.html">
-                <h1 class="service-description">Available Cities</h1>
-                <md-button class="md-raised menu-links" href="#!index/">Hide</md-button>
-                <md-table-container>
-                	<table md-table>
-                		<thead md-head>
-                			<tr md-row>
-                				<th md-column><span class="table-headings">City Id</span></th>
-                                    <th md-column><span class="table-headings">City Name </span></th>
-                                    <th md-column><span class="table-headings">Latitude</span></th>
-                                    <th md-column><span class="table-headings">Longitude</span></th>
-                                    <th md-column><span class="table-headings">Country Code </span></th>
-                			</tr>
-                		</thead>
-                		<tbody>
-                			<tr md-row ng-repeat="city in retrievedCityList">
-                				<td md-cell>{{city.cityId}}</td>
-                                <td md-cell>{{city.cityName}}</td>
-                                <td md-cell>{{city.latitude}}</td>
-                                <td md-cell>{{city.longitude}}</td>
-                                <td md-cell>{{city.countryCode}}</td>
-                			</tr>
-                		</tbody>
-                	</table>
-                </md-table-container>                     
-            </script>   
+        </div>            
     </div>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
@@ -262,17 +235,17 @@
 </body>
 
 <!-- Angular.js Libraries-->
-<script src="app/angular-1.7.8/angular.js"></script>
-<script src="app/angular-1.7.8/angular-animate.js"></script>
-<script src="app/angular-1.7.8/angular-aria.js"></script>
-<script src="app/angular-1.7.8/angular-messages.js"></script>
-<script src="app/angular-1.7.8/angular-route.js"></script>
+<script src="app/angular-1.7.8/angular.min.js"></script>
+<script src="app/angular-1.7.8/angular-animate.min.js"></script>
+<script src="app/angular-1.7.8/angular-aria.min.js"></script>
+<script src="app/angular-1.7.8/angular-messages.min.js"></script>
+<script src="app/angular-1.7.8/angular-route.min.js"></script>
 
 <!-- Angular Material Libraries-->
-<script src="app/angular-material-1.1.12/angular-material.js"></script>
-<script src="app/angular-material-table-0.10.9/md-data-table.js"></script>
+<script src="app/angular-material-1.1.12/angular-material.min.js"></script>
+<script src="app/angular-material-table-0.10.9/md-data-table.min.js"></script>
 
 <!-- Application bootstrap-->
-<script src="app/cloudyWeather.js"></script>
+<script src="app/main.js"></script>
 
 </html>
