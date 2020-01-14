@@ -601,4 +601,3 @@ if('serviceWorker' in navigator){
 		});
 	});
 }
-
