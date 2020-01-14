@@ -24,6 +24,7 @@ var urlsToCache = [
 
 	'/favicon.png',
 	'images/icons/icon-32x32.png',
+	'images/icons/banner.png',
 
 	'images/weather-icons/clear-day.svg',
 	'images/weather-icons/clear-night.svg',
@@ -72,7 +73,7 @@ self.addEventListener('fetch', function(event){
 			.then(function(cache){
 				cache.put(event.request, responseToCache);
 				});
-			
+
 			return response;
 			});
 		})
