@@ -594,10 +594,10 @@ if('serviceWorker' in navigator){
 	window.addEventListener('load', function(){
 		navigator.serviceWorker.register('/service-worker.js').
 		then(function(registration){
-			console.log("success");
+			console.log("service worker registered successfully");
 
 		}, function(err){
-			console.log("error");
+			console.log("service worker registration error");
 		});
 	});
 }
