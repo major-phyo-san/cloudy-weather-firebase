@@ -452,7 +452,6 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
     			$scope.uvIndexDataFetch($scope.currentWeatherObj.coord.lat, $scope.currentWeatherObj.coord.lon);
     			$scope.unitSignsSet($scope.britishUnitMode);
     			$scope.weatherIconAndWarning($scope.currentWeatherObj.weather[0].id);
-    			$scope.addCurrentCityToAvailableCities($scope.currentWeatherObj);
     		}, function errorCallBack(){
     			alert('api req fail');
     			$scope.toggleLeftMenu();
