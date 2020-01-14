@@ -11,12 +11,12 @@ md-sidenav{
 }
 
 md-toolbar.left-toolbar{
-    background: #3b68f2;
+    background: #156aeb;
 }
 
 md-toolbar.main-toolbar{
     /*background: #156aeb;*/
-    background: #000000;
+    background: #3b68f2;
 }
 
 md-icon{
