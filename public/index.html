@@ -7,19 +7,21 @@
   	window.dataLayer = window.dataLayer || [];
   	function gtag(){dataLayer.push(arguments);}
   	gtag('js', new Date());
-
   	gtag('config', 'UA-153233624-2');
 	</script>
-    <title>Cloudy Weather App</title>
-    <meta charset="utf-8">
 
+    <title>Cloudy Weather</title>
+    <meta charset="utf-8">    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#156aeb">
     <meta http-equip="X-UA-Compatible" content="IE=edge">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
+
     <link rel="stylesheet" href="app/angular-material-1.1.12/angular-material.min.css">
     <link rel="stylesheet" href="styles/material-design-icon-fonts/icon-font-include.css">
     <link rel="stylesheet" href="styles/mainstyle.css">
-    <link rel="stylesheet" href="app/angular-material-table-0.10.9/md-data-table.min.css">
-    <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
+    <link rel="stylesheet" href="app/angular-material-table-0.10.9/md-data-table.min.css">    
 </head>
 
 <body layout="row" flex ng-app="cloudyWeather" ng-controller="mainController" ng-cloak>
@@ -214,7 +216,7 @@
     <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-analytics.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-firestore.js"></script>
+    <!--<script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-firestore.js"></script>-->
 
     <!-- Initialize Firebase -->
     <script>
@@ -248,5 +250,8 @@
 
 <!-- Application bootstrap-->
 <script src="app/main.js"></script>
+
+<!-- Service Worker load-->
+<script src="service-worker.js"></script>
 
 </html>
