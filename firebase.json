@@ -11,6 +11,29 @@
         "source": "**",
         "destination": "/index.html"
       }
-    ]
-  }
+    ],
+
+    "headers": [ 
+    		{
+    		// Specifies a CORS header, and 1 day cache for all font files
+    		"source": "**/*.@(eot|otf|ttf|ttc|woff|woff2|font.css)",
+    		"headers": [ {
+      			"key": "Access-Control-Allow-Origin",
+      			"value": "*"
+    			}, {
+    			"key": "Cache-Control",
+    			"value": "max-age=86400"
+    			} ]
+  			},
+
+  			{
+    		// Overrides the default 1 hour browser cache with a 1 day cache for all static files
+    		"source": "**/*.@(jpg|jpeg|gif|png|html|js|css)",
+    		"headers": [ {
+      			"key": "Cache-Control",
+      			"value": "max-age=86400"
+    			} ]
+  			}
+  		] 
+	}
 }
