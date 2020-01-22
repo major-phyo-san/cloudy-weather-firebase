@@ -1,4 +1,4 @@
-var cache_name = "app-cache-v1";
+var cache_name = "app-cache-v2";
 var urlsToCache = [
 	'/',
 	'/index.html',
@@ -14,7 +14,6 @@ var urlsToCache = [
 	'/app/angular-material-1.1.12/angular-material.min.js',
 	'/app/angular-material-1.1.12/angular-material.min.css',
 
-	'/app/angular-material-table-0.10.9/md-data-table.css',
 	'/app/angular-material-table-0.10.9/md-data-table.min.css',
 	'/app/angular-material-table-0.10.9/md-data-table.min.js',
 
@@ -41,12 +40,19 @@ var urlsToCache = [
 	'images/weather-icons/wind.svg'
 ];
 
+if('serviceWorker' in navigator){
+	window.addEventListener('load', function(){
+		navigator.serviceWorker.register('/service-worker.js').
+		then(function(registration){
+		}, function(err){
+		});
+	});
+}
+
 self.addEventListener('install', function(event){
-	console.log('service worker installing');
 	event.waitUntil(
-		caches.open(cache_name)
-		.then(function(cache){
-			console.log('opened cache');
+		caches.open(cache_name).
+		then(function(cache){
 			return cache.addAll(urlsToCache);
 		})
 	);
@@ -57,7 +63,6 @@ self.addEventListener('fetch', function(event){
 		caches.match(event.request)
 		.then(function(response){
 			if(response){
-				console.log('cache hit');
 				return response;
 			}
 			var fetchRequest = event.request.clone();
@@ -73,7 +78,6 @@ self.addEventListener('fetch', function(event){
 			.then(function(cache){
 				cache.put(event.request, responseToCache);
 				});
-
 			return response;
 			});
 		})
