@@ -399,7 +399,8 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
     	detectedLat = pos.coords.latitude;
     	detectedLon = pos.coords.longitude;
     }, function(){
-    	alert("this browser dosen't support or is not allowed location access");
+    	detectedLat = null;
+    	detectedLon = null;
     });
 
     $scope.uvIndexDataFetch = function(lat, lon)
@@ -495,10 +496,16 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
 
     $scope.getWeatherByDetectedLatLon = function(detectedLat, detectedLon)
     {
-    	let detectedCoordUrl = "lat="+ Math.round(detectedLat*100)/100+"&lon="+ Math.round(detectedLon*100)/100;
-    	let currentWeatherReqUrl = currentWeatherUrl + detectedCoordUrl + unitModeUrl + appKeyUrl;
-    	let fiveDayForecastReqUrl = fiveDayForecastUrl + detectedCoordUrl + unitModeUrl + appKeyUrl;
-    	$scope.createReqObj(currentWeatherReqUrl,fiveDayForecastReqUrl);
+    	if(detectedLat == null || detectedLon == null)
+    		alert("This browser dosen't support or is not allowed to access location");
+    	else
+    	{
+    		let detectedCoordUrl = "lat="+ Math.round(detectedLat*100)/100+"&lon="+ Math.round(detectedLon*100)/100;
+    		let currentWeatherReqUrl = currentWeatherUrl + detectedCoordUrl + unitModeUrl + appKeyUrl;
+    		let fiveDayForecastReqUrl = fiveDayForecastUrl + detectedCoordUrl + unitModeUrl + appKeyUrl;
+    		$scope.createReqObj(currentWeatherReqUrl,fiveDayForecastReqUrl);
+       	}    	
+    	
     }
 
     $scope.getWeather = function()
@@ -552,7 +559,7 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
     			$scope.toggleLeftMenu();
     		}
     		else
-    			alert("no location detected automatically, please provide location manually");    		
+    			alert("Location not detected, please provide manually");    		
     	}
 
     	else
@@ -589,15 +596,3 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
     }
 
 });
-
-if('serviceWorker' in navigator){
-	window.addEventListener('load', function(){
-		navigator.serviceWorker.register('/service-worker.js').
-		then(function(registration){
-			console.log("service worker registered successfully");
-
-		}, function(err){
-			console.log("service worker registration error");
-		});
-	});
-}
