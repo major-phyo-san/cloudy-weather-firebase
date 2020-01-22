@@ -40,37 +40,3 @@ md-radio-button{
 h3{
 	color: #fff200;
 }
-
-/*md-card{
-    background: #f6ffed;
-}
-
-md-card-header-text {
-    color: #a0d911;
-}
-
-@media handheld{
-    md-card{
-        width: 120px;
-
-    }
-    .card-contents{
-        margin-left: 5px;
-    }
-}
-
-@media screen{
-    md-list{
-        marign-top: 10px;
-    }
-    md-card{        
-        width: 580px;
-    }
-
-    div.card-contents{
-        justify-content: left;
-        height: 80px;
-        margin: 10px;
-    }
-
-}*/
