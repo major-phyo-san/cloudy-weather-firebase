@@ -1,4 +1,4 @@
-var cache_name = "app-cache-v2";
+var cache_name = "app-cache-v3";
 var urlsToCache = [
 	'/',
 	'/index.html',
@@ -42,45 +42,47 @@ var urlsToCache = [
 
 if('serviceWorker' in navigator){
 	window.addEventListener('load', function(){
-		navigator.serviceWorker.register('/service-worker.js').
+		navigator.serviceWorker.register('service-worker.js').
 		then(function(registration){
+			console.log("registered");
 		}, function(err){
+			console.log("not registered");
 		});
 	});
 }
 
 self.addEventListener('install', function(event){
 	event.waitUntil(
+		caches.keys().then(function(cacheNames){ 
+			return Promise.all(
+				cacheNames.map(function(cacheName){
+						console.log("deleting old caches");
+						return caches.delete(cacheName);					
+					})
+				);
+			})
+		);
+
+	event.waitUntil(
 		caches.open(cache_name).
 		then(function(cache){
+			console.log("installing new caches");
 			return cache.addAll(urlsToCache);
 		})
 	);
 });
 
 self.addEventListener('fetch', function(event){
-	event.respondWith(
+	if(event.request.url.includes("cloudy-weather-2019.firebaseapp.com")){
+		event.respondWith(
 		caches.match(event.request)
 		.then(function(response){
 			if(response){
 				return response;
 			}
-			var fetchRequest = event.request.clone();
+			return fetch(event.request);
+			})
 
-			return fetch(fetchRequest)
-			.then(function(response){
-				if(!response || response.status !== 200){
-					return response;
-				}
-			var responseToCache = response.clone();
-
-			caches.open(cache_name)
-			.then(function(cache){
-				cache.put(event.request, responseToCache);
-				});
-			return response;
-			});
-		})
-
-	);
+		);
+	}
 });
