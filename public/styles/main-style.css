@@ -1,0 +1,121 @@
+.md-button{
+    text-transform: capitalize !important;
+}
+
+.toolbar-buttons{
+    width: 20px;
+}
+
+md-sidenav{
+    width: 280px;
+}
+
+md-toolbar.left-toolbar{
+    background: #156aeb;
+}
+
+md-toolbar.main-toolbar{
+    background: #3b68f2;
+}
+
+md-icon{
+    margin: 5px;
+}
+
+div#main-content{
+    margin-top: 50px;
+    margin-left: 5px;
+}
+
+md-input-container{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+md-radio-button{
+    color: #9254de;
+}
+
+h1.weather-info-section{
+	color: #00ff3b;
+}
+
+div #temp-intro{
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+
+div#weather-description{
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+
+spam.weather-description{
+	margin-to: 2px;
+	margin-bottom: 2px;
+}
+
+strong#temp-text{
+	font-size: 28px;
+}
+
+img#temp-icon{
+	height: 80px;
+	width: 50px;
+}
+
+strong#description-text{
+	color: #1d74f7;
+	font-size: 18px;
+}
+
+strong#updated-text{
+	color: #000000;
+	font-weight: bold;
+
+}
+
+img#description-icon{
+	height: 90px;
+	width: 90px;
+}
+
+div.weather-detail{
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+img.detail-img{
+	height: 50px;
+	width: 35px;
+	margin-left: 15px;
+}
+
+spam.detail-head-label{
+	font-size: 20px;
+	font-weight: 800;
+}
+
+spam.detail-data{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+strong.detail-label{
+	color: #000000;
+	font-size: 18px;
+	font-weight: 700;
+}
+
+strong.detail-data{
+	color: #0482f7;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+spam.forecast-cards{
+	font-size: 15px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	font-weight: 500;
+}
