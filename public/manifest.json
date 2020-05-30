@@ -1,5 +1,5 @@
 {
-	"short_name" : "Cloudy Weather Web App",
+	"short_name" : "Cloudy Weather",
 	"name" : "Cloudy Weather",
 	"icons" : [
 		{
@@ -17,7 +17,7 @@
 
 	"scope" : "/",
 	"start_url" : "/",
-	"background_color" : "#156aeb",
+	"background_color" : "#3b68f2",
 	"theme_color" : "#156aeb",
 	"display" : "standalone"
 }
