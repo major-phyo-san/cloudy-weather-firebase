@@ -1,8 +1,8 @@
-var cache_name = "app-cache-v3";
+var cache_name = "app-cache-v23";
 var urlsToCache = [
 	'/',
 	'/index.html',
-	'/app/main.js',
+	'/app/app.js',
 
 	'/app/angular-1.7.8/angular.min.js',
 	'/app/angular-1.7.8/angular-animate.min.js',
@@ -14,30 +14,13 @@ var urlsToCache = [
 	'/app/angular-material-1.1.12/angular-material.min.js',
 	'/app/angular-material-1.1.12/angular-material.min.css',
 
-	'/app/angular-material-table-0.10.9/md-data-table.min.css',
-	'/app/angular-material-table-0.10.9/md-data-table.min.js',
-
-	'/styles/mainstyle.css',
+	'/styles/main-style.css',
 	'/styles/material-design-icon-fonts/icon-font-include.css',
 	'/styles/material-design-icon-fonts/icon-fonts.woff2',
 
 	'/favicon.png',
 	'images/icons/icon-32x32.png',
 	'images/icons/banner.png',
-
-	'images/weather-icons/clear-day.svg',
-	'images/weather-icons/clear-night.svg',
-	'images/weather-icons/cloudy.svg',
-	'images/weather-icons/fog.svg',
-	'images/weather-icons/hail.svg',
-	'images/weather-icons/partly-cloudy-day.svg',
-	'images/weather-icons/partly-cloudy-night.svg',
-	'images/weather-icons/rain.svg',
-	'images/weather-icons/sleet.svg',
-	'images/weather-icons/snow.svg',
-	'images/weather-icons/thunderstorm.svg',
-	'images/weather-icons/tornado.svg',
-	'images/weather-icons/wind.svg'
 ];
 
 if('serviceWorker' in navigator){
