@@ -110,11 +110,18 @@
     	</div>
         
 
-        <div layout="column" id="main-content" layout-align="center">
+        <div layout="column" id="main-content" layout-align="start start">
         	<div ng-show="currentWeatherObj" ng-if="currentWeatherObj">        		
         		<h1 class="weather-info-section">Current Weather</h1>
-        		<spam class="weather-description"> <strong id="updated-text"> {{fiveDayForecastObj.city.name}}, {{fiveDayForecastObj.city.country}} ({{unixTimeToNormalTime(currentWeatherObj.dt)}}) </strong> </spam>      		
+        		<div layout="column">
+        		<spam ng-show="fiveDayForecastObj" class="weather-description"> 
+        			<strong id="updated-text"> {{fiveDayForecastObj.city.name}}, {{fiveDayForecastObj.city.country}}</strong> 
+        		</spam>
+        		<spam ng-show="fiveDayForecastObj" class="weather-description"> 
+        			<strong id="updated-text">Updated on {{unixTimeToNormalTime(currentWeatherObj.dt)}} </strong>
+        		</spam>    		
         		<spam>{{weatherIconAndWarning(currentWeatherObj)}} </spam>
+        		</div>
         		<div id="temp-intro" layout="row" layout-align="start center"> 
         			<spam><strong id="temp-text"> {{currentWeatherObj.main.temp}} {{tempDegreeSign}}</strong> </spam>
         			<spam> <img id="temp-icon" ng-src="images/weather-icons/{{tempIconUrl}}"/>
@@ -144,10 +151,10 @@
         			</div>
 
         			<spam class="detail-data"><strong class="detail-label">Pressure:</strong> <strong class="detail-data">{{currentWeatherObj.main.pressure}} {{pressureSign}}</strong></spam>
-        			<spam class="detail-data"><strong class="detail-label">Humidity:</strong> <strong class="detail-data">{{currentWeatherObj.main.humidity}} {{humiditySign}}</strong></spam>
-        			<spam class="detail-data"><strong class="detail-label">Cloud Coverage:</strong> <strong class="detail-data">{{currentWeatherObj.clouds.all}} {{cloudPercentSign}}</strong></spam>
+        			<spam class="detail-data"><strong class="detail-label">Humidity:</strong> <strong class="detail-data">{{currentWeatherObj.main.humidity}} {{percentSign}}</strong></spam>
+        			<spam class="detail-data"><strong class="detail-label">Cloud Coverage:</strong> <strong class="detail-data">{{currentWeatherObj.clouds.all}} {{percentSign}}</strong></spam>
         			<spam class="detail-data"><strong class="detail-label">Visibility:</strong> <strong class="detail-data">{{currentWeatherObj.visibility}} {{visibilitySign}}</strong></spam>
-        			<spam class="detail-data"><strong class="detail-label">UV Index:</strong> <strong class="detail-data">{{uvDataObj.value}}</strong></spam>
+        			<spam ng-if="uvDataObj" class="detail-data"><strong class="detail-label">UV Index:</strong> <strong class="detail-data">{{uvDataObj.value}}</strong></spam>
         		</div>
 
         		<div class="weather-detail" layout="column">
@@ -158,7 +165,7 @@
 
         			<spam class="detail-data"><strong class="detail-label">Speed:</strong> <strong class="detail-data">{{currentWeatherObj.wind.speed}} {{windSpeedSign}}</strong></spam>
         			<spam class="detail-data"><strong class="detail-label">Direction:</strong> <strong class="detail-data">{{windDirection(currentWeatherObj.wind.deg)}}</strong></spam>
-        			<spam class="detail-data"><strong class="detail-label">Gust:</strong> <strong class="detail-data">{{currentWeatherObj.wind.gust}} {{windSpeedSign}}</strong></spam>
+        			<spam ng-if="currentWeatherObj.wind.gust" class="detail-data"><strong class="detail-label">Gust:</strong> <strong class="detail-data">{{currentWeatherObj.wind.gust}} {{windSpeedSign}}</strong></spam>
         		</div>
 
         		<div class="weather-detail" layout="column">
@@ -170,7 +177,7 @@
         			<spam class="detail-data"><strong class="detail-label">Country:</strong> <strong class="detail-data">{{fiveDayForecastObj.city.country}}</strong></spam>
         			<spam class="detail-data"><strong class="detail-label">Population:</strong> <strong class="detail-data">{{fiveDayForecastObj.city.population}}</strong></spam>        			
         			<spam class="detail-data"><strong class="detail-label">Latitude:</strong> <strong class="detail-data">{{currentWeatherObj.coord.lat}} {{latitudeSign}}</strong></spam>
-        			<spam class="detail-data"><strong class="detail-label">Longitude:</strong> <strong class="detail-data">{{currentWeatherObj.coord.lon}} {{latitudeSign}}</strong></spam>
+        			<spam class="detail-data"><strong class="detail-label">Longitude:</strong> <strong class="detail-data">{{currentWeatherObj.coord.lon}} {{longitudeSign}}</strong></spam>
         			<spam class="detail-data"><strong class="detail-label">Sunrise:</strong> <strong class="detail-data">{{unixTimeToNormalTime(currentWeatherObj.sys.sunrise)}}</strong></spam>
         			<spam class="detail-data"><strong class="detail-label">Sunset:</strong> <strong class="detail-data">{{unixTimeToNormalTime(currentWeatherObj.sys.sunset)}}</strong></spam>
         			<spam class="detail-data"><strong class="detail-label">Timezone:</strong> <strong class="detail-data">{{fiveDayForecastObj.city.timezone}}</strong></spam>
@@ -209,8 +216,13 @@
         								<spam class="forecast-cards">Pressure (Ground): <strong>{{forecast.main.grnd_level}} {{pressureSign}} </strong></spam>
         								<spam class="forecast-cards">Pressure (Sea): <strong>{{forecast.main.sea_level}}  {{pressureSign}}</strong></spam>
 
-        								<spam class="forecast-cards">Humidity: <strong>{{forecast.main.humidity}} {{humiditySign}}</strong></spam>
-        								<spam class="forecast-cards">Cloud Coverage: <strong>{{forecast.clouds.all}} {{cloudPercentSign}} </strong></spam>
+        								<spam class="forecast-cards">Humidity: <strong>{{forecast.main.humidity}} {{percentSign}}</strong></spam>
+        								<spam class="forecast-cards">Cloud Coverage: <strong>{{forecast.clouds.all}} {{percentSign}} </strong></spam>
+
+        								<spam ng-if="forecast.rain">
+        									Rain volume: <strong>{{forecast.rain["3h"]}} {{rainVolSign}} </strong>
+        								</spam>
+
         								<spam class="forecast-cards">Wind Speed: <strong>{{forecast.wind.speed}} {{windSpeedSign}} </strong></spam>
         								<spam class="forecast-cards">Wind Direction: <strong>{{windDirection(forecast.wind.deg)}} </strong></spam>
         							</div>
@@ -226,8 +238,8 @@
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
 
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <!-- TODO: Add SDKs for Firebase products that you want to use -->
+    <!-- https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
 

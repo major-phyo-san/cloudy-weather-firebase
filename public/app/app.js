@@ -31,9 +31,9 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
 
     $scope.tempDegreeSign = "";
     $scope.pressureSign = "";
-    $scope.humiditySign = "";
+    
     $scope.visibilitySign = ""    
-    $scope.cloudPercentSign = "";
+    $scope.percentSign = "%";
     $scope.windSpeedSign = "";
     $scope.rainVolSign = "";
     $scope.latitudeSign = "";
@@ -95,9 +95,9 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
     	{
     		$scope.tempDegreeSign = "° F";
     		$scope.pressureSign = "hpa";
-    		$scope.humiditySign = "%";
+    		
     		$scope.visibilitySign = "ft";
-    		$scope.cloudPercentSign = "%";
+    		
     		$scope.windSpeedSign = "miles/h";
             $scope.rainVolSign = "inch";
     		$scope.latitudeSign = "° N";
@@ -108,9 +108,9 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
     	{
     		$scope.tempDegreeSign = "° C";
     		$scope.pressureSign = "hpa";
-    		$scope.humiditySign = "%";
+    		
     		$scope.visibilitySign = "m";
-    		$scope.cloudPercentSign = "%";
+    		
     		$scope.windSpeedSign = "km/h";
             $scope.rainVolSign = "mm";
     		$scope.latitudeSign = "° N";
@@ -525,9 +525,9 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
     			$scope.weatherWarningText += "with overcast clouds in the sky";
     			if(cloudPercent<=60)
     				$scope.weatherIconUrl = "cloudy/overcast-clouds-1.svg";
-    			else if(cloudPercent>60 && cloudPercent<80)
+    			if(cloudPercent>60 && cloudPercent<=80)
     				$scope.weatherIconUrl = "cloudy/overcast-clouds-2.svg";
-    			else
+    			if(cloudPercent>80)
     				$scope.weatherIconUrl = "cloudy/overcast-clouds-3.svg";
 
     		}
@@ -596,6 +596,7 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
     	$http(req)
     		.then(function succcessCallBack(response){
     			$scope.fiveDayForecastObj = response.data;
+    			    			
     		}, function errorCallBack(){
 
     		});      
