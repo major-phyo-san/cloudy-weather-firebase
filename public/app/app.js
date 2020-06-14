@@ -30,14 +30,15 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
     $scope.uvDataObj = "";
 
     $scope.tempDegreeSign = "";
-    $scope.pressureSign = "";
-    
-    $scope.visibilitySign = ""    
-    $scope.percentSign = "%";
+    $scope.visibilitySign = "";
     $scope.windSpeedSign = "";
-    $scope.rainVolSign = "";
-    $scope.latitudeSign = "";
-    $scope.longitudeSign = ""
+
+    $scope.pressureSign = "hpa";       
+    $scope.percentSign = "%";    
+    $scope.rainVolSign = "mm";
+    $scope.latitudeSign = "° N";
+    $scope.longitudeSign = "° E"
+    
     $scope.britishUnitMode = false;
 
     $scope.weatherWarningText = "";
@@ -93,26 +94,18 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
     {
     	if(britishUnitMode)
     	{
-    		$scope.tempDegreeSign = "° F";
-    		$scope.pressureSign = "hpa";
-    		
-    		$scope.visibilitySign = "ft";
-    		
-    		$scope.windSpeedSign = "miles/h";
-            $scope.rainVolSign = "inch";
+    		$scope.tempDegreeSign = "° F";    		   		
+    		$scope.visibilitySign = "ft";    		
+    		$scope.windSpeedSign = "miles/h";            
     		$scope.latitudeSign = "° N";
     		$scope.longitudeSign = "° E";
     	}
 
     	else
     	{
-    		$scope.tempDegreeSign = "° C";
-    		$scope.pressureSign = "hpa";
-    		
-    		$scope.visibilitySign = "m";
-    		
-    		$scope.windSpeedSign = "km/h";
-            $scope.rainVolSign = "mm";
+    		$scope.tempDegreeSign = "° C";    		  		
+    		$scope.visibilitySign = "m";  		
+    		$scope.windSpeedSign = "m/s";            
     		$scope.latitudeSign = "° N";
     		$scope.longitudeSign = "° E"
     	}
