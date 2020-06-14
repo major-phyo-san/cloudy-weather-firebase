@@ -24,7 +24,7 @@ var urlsToCache = [
 
 	'images/weather-icons/haze-fog-dust-smoke.svg',
 	'images/weather-icons/tornado-day.svg',
-	'images/weather-icons/tornado-night.svg'
+	'images/weather-icons/tornado-night.svg',
 
 	'images/weather-icons/clear/clear-day.svg',
 	'images/weather-icons/clear/clear-night.svg'
