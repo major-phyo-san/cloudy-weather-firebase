@@ -139,9 +139,17 @@
         				<spam> <img class="detail-img" ng-src="images/weather-icons/measurements/temp-moderate.svg"/> </spam>
         			</div>
         			
-        			<spam class="detail-data"><strong class="detail-label">Maximum: </strong>  <strong class="detail-data">{{currentWeatherObj.main.temp_max}} {{tempDegreeSign}}</strong> </spam>
-        			<spam class="detail-data"><strong class="detail-label">Minimum: </strong> <strong class="detail-data">{{currentWeatherObj.main.temp_min}} {{tempDegreeSign}}</strong></spam>
-        			<spam class="detail-data"><strong class="detail-label">Feels Like: </strong> <strong class="detail-data">{{currentWeatherObj.main.feels_like}} {{tempDegreeSign}}</strong></spam>
+        			<spam class="detail-data"> 
+        				<strong class="detail-label">Maximum: </strong>  <strong class="detail-data">{{currentWeatherObj.main.temp_max}} {{tempDegreeSign}}</strong> 
+        			</spam>
+
+        			<spam class="detail-data"> 
+        				<strong class="detail-label">Minimum: </strong> <strong class="detail-data">{{currentWeatherObj.main.temp_min}} {{tempDegreeSign}}</strong> 
+        			</spam>
+
+        			<spam class="detail-data"> 
+        				<strong class="detail-label">Feels Like: </strong> <strong class="detail-data">{{currentWeatherObj.main.feels_like}} {{tempDegreeSign}}</strong> 
+        			</spam>
         		</div>
 
         		<div class="weather-detail"  layout="column">
@@ -150,11 +158,49 @@
         				<spam> <img class="detail-img" ng-src="images/weather-icons/measurements/humidity.svg"/> </spam>
         			</div>
 
-        			<spam class="detail-data"><strong class="detail-label">Pressure:</strong> <strong class="detail-data">{{currentWeatherObj.main.pressure}} {{pressureSign}}</strong></spam>
-        			<spam class="detail-data"><strong class="detail-label">Humidity:</strong> <strong class="detail-data">{{currentWeatherObj.main.humidity}} {{percentSign}}</strong></spam>
-        			<spam class="detail-data"><strong class="detail-label">Cloud Coverage:</strong> <strong class="detail-data">{{currentWeatherObj.clouds.all}} {{percentSign}}</strong></spam>
-        			<spam class="detail-data"><strong class="detail-label">Visibility:</strong> <strong class="detail-data">{{currentWeatherObj.visibility}} {{visibilitySign}}</strong></spam>
-        			<spam ng-if="uvDataObj" class="detail-data"><strong class="detail-label">UV Index:</strong> <strong class="detail-data">{{uvDataObj.value}}</strong></spam>
+        			<spam class="detail-data"> 
+        				<strong class="detail-label">Pressure:</strong> <strong class="detail-data">{{currentWeatherObj.main.pressure}} {{pressureSign}}</strong> 
+        			</spam>
+
+        			<spam class="detail-data"> 
+        				<strong class="detail-label">Humidity:</strong> <strong class="detail-data">{{currentWeatherObj.main.humidity}} {{percentSign}}</strong> 
+        			</spam>
+
+        			<spam class="detail-data"> 
+        				<strong class="detail-label">Cloud Coverage:</strong> <strong class="detail-data">{{currentWeatherObj.clouds.all}} {{percentSign}}</strong> 
+        			</spam>
+
+        			<spam ng-if="currentWeatherObj.visibility" class="detail-data">
+        				<strong class="detail-label">Visibility:</strong> <strong class="detail-data">{{currentWeatherObj.visibility}} {{visibilitySign}}</strong> 
+        			</spam>
+
+        			<spam ng-if="uvDataObj" class="detail-data"> 
+        				<strong class="detail-label">UV Index:</strong> <strong class="detail-data">{{uvDataObj.value}}</strong> 
+        			</spam>
+        		</div>
+
+        		<div ng-if="currentWeatherObj.rain" class="weather-detail" layout="column">
+        			<div layout="row" layout-align="start center">
+        				<spam class="detail-head-label">Rain</spam>
+        				<spam> <img class="detail-img" ng-src="images/weather-icons/rain/heavy-rain.svg"/> </spam>
+        			</div>
+
+        			<spam ng-if="currentWeatherObj.rain['3h']" class="detail-data"> 
+        				<strong class="detail-label">Rain volume in the last 3 hours:</strong> <strong class="detail-data"> {{currentWeatherObj.rain['3h']}} {{rainVolSign}} </strong>
+        			</spam>
+
+        			<spam ng-if="currentWeatherObj.rain['1h']" class="detail-data"> 
+        				<strong class="detail-label">Rain volume in the last hour:</strong> <strong class="detail-data"> {{currentWeatherObj.rain['1h']}} {{rainVolSign}} </strong>
+        			</spam>
+
+        			<div layout="column"> 
+        				<spam><strong class="detail-label">Rain viewer map (courtesy of https://www.RainViewer.com/) </strong> </spam>
+        				<spam> 
+        					<iframe src="https://www.rainviewer.com/map.html?
+        					loc={{currentWeatherObj.coord.lat}},{{currentWeatherObj.coord.lon}},
+        					5&oFa=0&oC=0&oU=0&oCS=1&oF=0&oAP=0&rmt=4&c=1&o=83&lm=0&th=0&sm=1&sn=1" width="100%" frameborder="0" style="border:0;height:50vh;" allowfullscreen></iframe>
+        				</spam>
+        			</div>
         		</div>
 
         		<div class="weather-detail" layout="column">
@@ -163,9 +209,17 @@
         				<spam> <img class="detail-img" ng-src="images/weather-icons/measurements/wind-day.svg"/> </spam>
         			</div>
 
-        			<spam class="detail-data"><strong class="detail-label">Speed:</strong> <strong class="detail-data">{{currentWeatherObj.wind.speed}} {{windSpeedSign}}</strong></spam>
-        			<spam class="detail-data"><strong class="detail-label">Direction:</strong> <strong class="detail-data">{{windDirection(currentWeatherObj.wind.deg)}}</strong></spam>
-        			<spam ng-if="currentWeatherObj.wind.gust" class="detail-data"><strong class="detail-label">Gust:</strong> <strong class="detail-data">{{currentWeatherObj.wind.gust}} {{windSpeedSign}}</strong></spam>
+        			<spam class="detail-data"> 
+        				<strong class="detail-label">Speed:</strong> <strong class="detail-data">{{currentWeatherObj.wind.speed}} {{windSpeedSign}}</strong> 
+        			</spam>
+
+        			<spam class="detail-data"> 
+        				<strong class="detail-label">Direction:</strong> <strong class="detail-data">{{windDirection(currentWeatherObj.wind.deg)}}</strong> 
+        			</spam>
+
+        			<spam ng-if="currentWeatherObj.wind.gust" class="detail-data"> 
+        				<strong class="detail-label">Gust:</strong> <strong class="detail-data">{{currentWeatherObj.wind.gust}} {{windSpeedSign}}</strong> 
+        			</spam>
         		</div>
 
         		<div class="weather-detail" layout="column">
@@ -219,7 +273,7 @@
         								<spam class="forecast-cards">Humidity: <strong>{{forecast.main.humidity}} {{percentSign}}</strong></spam>
         								<spam class="forecast-cards">Cloud Coverage: <strong>{{forecast.clouds.all}} {{percentSign}} </strong></spam>
 
-        								<spam ng-if="forecast.rain">
+        								<spam ng-if="forecast.rain" class="forecast-cards">
         									Rain volume: <strong>{{forecast.rain["3h"]}} {{rainVolSign}} </strong>
         								</spam>
 
