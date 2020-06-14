@@ -1,4 +1,4 @@
-var cache_name = "app-cache-v24";
+var cache_name = "app-cache-v25";
 var urlsToCache = [
 	'/',
 	'/index.html',
@@ -21,6 +21,58 @@ var urlsToCache = [
 	'/favicon.png',
 	'images/icons/icon-32x32.png',
 	'images/icons/banner.png',
+
+	'images/weather-icons/haze-fog-dust-smoke.svg',
+	'images/weather-icons/tornado-day.svg',
+	'images/weather-icons/tornado-night.svg'
+
+	'images/weather-icons/clear/clear-day.svg',
+	'images/weather-icons/clear/clear-night.svg'
+	'images/weather-icons/clear/mostly-clear-day.svg',
+	'images/weather-icons/clear/mostly-clear-night.svg',
+
+	'images/weather-icons/cloudy/mostly-cloudy-day-1.svg',
+	'images/weather-icons/cloudy/mostly-cloudy-day-2.svg',
+	'images/weather-icons/cloudy/mostly-cloudy-night-1.svg',
+	'images/weather-icons/cloudy/mostly-cloudy-night-2.svg',
+	'images/weather-icons/cloudy/overcast-clouds-1.svg',
+	'images/weather-icons/cloudy/overcast-clouds-2.svg',
+	'images/weather-icons/cloudy/overcast-clouds-3.svg',
+	'images/weather-icons/cloudy/partly-cloudy-day.svg',
+	'images/weather-icons/cloudy/partly-cloudy-night.svg',
+
+	'images/weather-icons/drizzle/drizzle-heavy.svg',
+	'images/weather-icons/drizzle/drizzle-rain.svg',
+	'images/weather-icons/drizzle/drizzle.svg',
+
+	'images/weather-icons/rain/freezing-rain.svg',
+	'images/weather-icons/rain/heavy-rain.svg',
+	'images/weather-icons/rain/light-rain.svg',
+	'images/weather-icons/rain/rain.svg',
+	'images/weather-icons/rain/scattered-showers-day.svg',
+	'images/weather-icons/rain/scattered-showers-night.svg',
+	'images/weather-icons/rain/showers-day.svg',
+	'images/weather-icons/rain/showers-night.svg',
+
+	'images/weather-icons/snow/hail.svg',
+	'images/weather-icons/snow/heavy-snow.svg',
+	'images/weather-icons/snow/sleet.svg',
+	'images/weather-icons/snow/snow-shower-snow.svg',
+	'images/weather-icons/snow/snow.svg',
+	'images/weather-icons/snow/wintry-mix-snow.svg',
+
+	'images/weather-icons/thunderstorm/isolated-scattered-tstorms-day.svg',
+	'images/weather-icons/thunderstorm/isolated-scattered-tstorms-night.svg',
+	'images/weather-icons/thunderstorm/thunderstorm-light.svg',
+	'images/weather-icons/thunderstorm/thunderstorm-rain.svg',
+	'images/weather-icons/thunderstorm/thunderstorm.svg',
+
+	'images/weather-icons/measurements/humidity.svg',
+	'images/weather-icons/measurements/temp-cold.svg',
+	'images/weather-icons/measurements/temp-moderate.svg',
+	'images/weather-icons/measurements/temp-hot.svg'
+	'images/weather-icons/measurements/wind-day.svg',
+	'images/weather-icons/measurements/wind-night.svg'
 ];
 
 if('serviceWorker' in navigator){
