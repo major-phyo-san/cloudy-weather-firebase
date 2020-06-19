@@ -298,11 +298,11 @@ cloudyWeather.controller("mainController", function($scope, $mdSidenav, $window,
     		}
     		if(weatherCode==501){
     			$scope.weatherWarningText += "moderate rain";
-    			$scope.weatherIconUrl = "rain/rain.svg"
+    			$scope.weatherIconUrl = "rain/light-rain.svg"
     		}
     		if(weatherCode==502){
     			$scope.weatherWarningText += "heavy intensity rain";
-    			$scope.weatherIconUrl = "rain/rain.svg"    			
+    			$scope.weatherIconUrl = "rain/heavy-rain.svg"    			
     		}
     		if(weatherCode==503){
     			$scope.weatherWarningText += "very heavy rain";
