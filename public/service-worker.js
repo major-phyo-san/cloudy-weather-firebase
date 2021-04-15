@@ -1,4 +1,4 @@
-var cache_name = "app-cache-v25";
+var cache_name = "app-cache-v26";
 var urlsToCache = [
 	'/',
 	'/index.html',
@@ -20,7 +20,8 @@ var urlsToCache = [
 
 	'/favicon.png',
 	'images/icons/icon-32x32.png',
-	'images/icons/banner.png',	
+	'images/icons/banner.png',
+               'images/weather-icons/*'	
 ];
 
 if('serviceWorker' in navigator){
